@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bizarre Adventure — Полный гайд и вики | Roblox</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #1a0a2e;
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            color: #f0e6d2;
+            line-height: 1.7;
+            background-image: radial-gradient(circle at 20% 30%, #4a1e6b 5%, #1a0a2e 90%);
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem 1rem;
+            transition: all 0.8s ease;
+        }
+
+        body.dark-theme {
+            background: #000 !important;
+            background-image: url('https://images.unsplash.com/photo-1504805572947-34fad45aed93?q=80&w=2070&auto=format&fit=crop') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+        }
+        body.dark-theme::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 0;
+        }
+
+        .music-toggle-btn {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 1000; background: rgba(0,0,0,0.9);
+            border: 2px solid #ff4444; color: #ff6666;
+            padding: 12px 25px; border-radius: 30px;
+            font-size: 15px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 0 25px rgba(255,0,0,0.4);
+            transition: all 0.4s ease; display: none;
+            align-items: center; gap: 10px; backdrop-filter: blur(10px);
+        }
+        body.dark-theme .music-toggle-btn { display: flex; }
+        .music-toggle-btn:hover { background: #ff4444; color: white; box-shadow: 0 0 40px #ff0000; transform: translateX(-50%) scale(1.05); }
+        .music-toggle-btn.playing { border-color: #00ff00; color: #00ff00; box-shadow: 0 0 25px rgba(0,255,0,0.4); }
+        .music-toggle-btn.playing:hover { background: #00ff00; color: black; box-shadow: 0 0 40px #00ff00; }
+
+        .secret-btn {
+            position: fixed; bottom: 20px; left: 20px;
+            width: 25px; height: 25px;
+            background: rgba(212,175,55,0.3);
+            border: 2px solid rgba(212,175,55,0.5);
+            border-radius: 50%; cursor: pointer; z-index: 999;
+            transition: all 0.3s;
+        }
+        .secret-btn:hover { background: rgba(212,175,55,0.8); box-shadow: 0 0 25px #d4af37; transform: scale(1.4); }
+        .secret-hint { position: fixed; bottom: 28px; left: 55px; color: #d4af37; font-size: 13px; z-index: 999; opacity: 0.7; font-weight: bold; }
+        .theme-indicator { position: fixed; bottom: 60px; left: 20px; z-index: 999; background: rgba(0,0,0,0.9); color: #d4af37; padding: 8px 15px; border-radius: 20px; font-size: 12px; opacity: 0; transition: all 0.5s; }
+        .theme-indicator.show { opacity: 1; }
+
+        .lang-switcher {
+            position: fixed; top: 20px; right: 20px; z-index: 999;
+            display: flex; gap: 8px;
+            background: rgba(30,10,50,0.95); backdrop-filter: blur(10px);
+            padding: 5px; border-radius: 30px; border: 2px solid #c9a063;
+        }
+        body.dark-theme .lang-switcher { background: rgba(0,0,0,0.95); border-color: #ff4444; }
+
+        .lang-btn {
+            background: transparent; border: 2px solid transparent;
+            color: #d4af37; padding: 8px 15px; border-radius: 25px;
+            font-weight: bold; font-size: 14px; cursor: pointer;
+            transition: all 0.3s; text-transform: uppercase;
+        }
+        .lang-btn:hover { border-color: #e0b354; color: white; }
+        .lang-btn.active-lang { background: #9b4dca; border-color: #f3cd54; color: white; font-weight: 800; box-shadow: 0 0 15px #c27e2e; }
+        body.dark-theme .lang-btn.active-lang { background: #8b0000; border-color: #ff4444; }
+
+        .main-card {
+            max-width: 1000px; width: 100%;
+            background: rgba(30,10,50,0.85); backdrop-filter: blur(20px);
+            border: 2px solid #c9a063; border-radius: 30px; padding: 25px;
+            position: relative; z-index: 1; transition: all 0.5s;
+        }
+        body.dark-theme .main-card { background: rgba(0,0,0,0.85); border-color: #8b0000; }
+
+        h1 {
+            font-size: 2.5rem; font-weight: 900; text-transform: uppercase;
+            text-align: center; color: #fadf8a;
+            text-shadow: 0 0 15px #b85e0c, 0 0 30px #9b4dca; margin-bottom: 10px;
+        }
+        body.dark-theme h1 { color: #ff4444; text-shadow: 0 0 20px #ff0000; }
+
+        .subtitle {
+            text-align: center; font-size: 1.2rem; color: #dbb45c;
+            background: rgba(60,20,80,0.7); display: inline-block;
+            padding: 8px 25px; border-radius: 25px;
+            margin: 10px auto 20px; border: 1px solid #ab8b4c;
+        }
+        body.dark-theme .subtitle { background: rgba(20,0,0,0.8); color: #ff6666; border-color: #8b0000; }
+        .title-wrapper { display: flex; flex-direction: column; align-items: center; }
+
+        .tabs-container {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;
+            margin: 20px 0; background: rgba(40,15,65,0.6);
+            padding: 8px; border-radius: 30px;
+        }
+        body.dark-theme .tabs-container { background: rgba(0,0,0,0.8); }
+
+        .tab-btn {
+            background: transparent; border: 2px solid #9b4dca;
+            color: #d4af37; padding: 10px 15px; border-radius: 25px;
+            font-weight: bold; font-size: 14px; cursor: pointer;
+            transition: all 0.3s; text-transform: uppercase;
+        }
+        .tab-btn:hover { background: #6b3fa0; border-color: #e0b354; color: white; }
+        .tab-btn.active { background: #9b4dca; border-color: #f3cd54; color: white; box-shadow: 0 0 20px #c27e2e; }
+        body.dark-theme .tab-btn { border-color: #8b0000; color: #ff6666; }
+        body.dark-theme .tab-btn.active { background: #8b0000; border-color: #ff4444; }
+
+        .tab-content { display: none; animation: fadeIn 0.3s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .features-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin: 20px 0; }
+        .feature-box {
+            background: rgba(50,20,80,0.8); border: 2px solid #9b4dca;
+            border-radius: 20px; padding: 20px; flex: 1 1 180px;
+            min-width: 150px; text-align: center; transition: all 0.3s; position: relative;
+        }
+        .feature-box:hover { transform: translateY(-5px); border-color: #e0b354; }
+        body.dark-theme .feature-box { background: rgba(0,0,0,0.8); border-color: #8b0000; }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .feature-box h3 { color: #f3cd81; font-size: 1.1rem; margin: 5px 0; }
+
+        .new-badge {
+            position: absolute; top: -10px; right: -10px;
+            background: #e03a3a; color: white; font-weight: bold;
+            font-size: 11px; padding: 3px 10px; border-radius: 15px;
+            box-shadow: 0 0 15px #ff4d4d; transform: rotate(5deg);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%,100%{box-shadow:0 0 15px #ff4d4d} 50%{box-shadow:0 0 25px #ff4d4d} }
+
+        .top-tier-card {
+            background: linear-gradient(135deg, #3d1a5c, #1e0a30);
+            border: 2px solid #f3cd54; border-radius: 20px;
+            padding: 20px; margin: 15px 0;
+        }
+        body.dark-theme .top-tier-card { background: linear-gradient(135deg, #1a0000, #0a0000); border-color: #ff4444; }
+        .tier-badge { display: inline-block; background: #f3cd54; color: #1a0a2e; font-weight: 900; padding: 5px 15px; border-radius: 20px; }
+        body.dark-theme .tier-badge { background: #ff4444; color: #000; }
+
+        .info-block {
+            background: rgba(40,15,65,0.7); border-radius: 20px;
+            padding: 20px; margin: 15px 0; border: 1px solid #9b4dca;
+        }
+        body.dark-theme .info-block { background: rgba(0,0,0,0.8); border-color: #8b0000; }
+
+        .btn {
+            display: inline-block; background: linear-gradient(180deg, #6b3fa0, #3d1a5c);
+            border: 2px solid #cf9f4b; color: #f6e3b3; font-weight: bold;
+            padding: 12px 25px; border-radius: 25px; text-decoration: none;
+            transition: all 0.3s; text-transform: uppercase; margin: 5px;
+        }
+        .btn:hover { background: #9b4dca; border-color: #f3b54a; color: white; }
+        body.dark-theme .btn { background: linear-gradient(180deg, #8b0000, #4a0000); border-color: #ff4444; }
+
+        h2 { color: #fadf8a; text-align: center; margin: 15px 0; text-shadow: 0 0 10px #9b4dca; }
+        body.dark-theme h2 { color: #ff6666; text-shadow: 0 0 10px #ff0000; }
+
+        .stand-badge {
+            background: #3d1a5c; border: 1px solid #c9a063;
+            border-radius: 20px; padding: 8px 15px; color: #ffe4a8;
+            display: inline-block; margin: 3px; font-size: 13px;
+        }
+        body.dark-theme .stand-badge { background: #1a0000; border-color: #8b0000; color: #ff8888; }
+
+        .gang-card {
+            background: rgba(40,15,65,0.9); border: 2px solid #9b4dca;
+            border-radius: 20px; padding: 20px; margin: 15px 0;
+        }
+        body.dark-theme .gang-card { background: rgba(0,0,0,0.9); border-color: #8b0000; }
+        .gang-card.dt { border-color: #8b0000; }
+        .gang-card.nk { border-color: #006400; }
+        .gang-card.twlz { border-color: #4b0082; }
+        .gang-card h3 { color: #f3cd54; text-align: center; margin-bottom: 10px; font-size: 1.3rem; }
+
+        .member-list { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin: 10px 0; }
+        .member-tag {
+            background: #2a1040; border: 1px solid #c9a063;
+            border-radius: 15px; padding: 5px 12px; font-size: 13px; color: #ffe4a8;
+        }
+        body.dark-theme .member-tag { background: #1a0000; border-color: #8b0000; }
+
+        .video-link { color: #ff6b6b; font-weight: bold; }
+        .glossary-term { color: #f3cd54; font-weight: bold; font-size: 1.1rem; }
+
+        .stat-row {
+            display: flex; justify-content: space-between; padding: 8px 0;
+            border-bottom: 1px dashed #6b3fa0; margin: 5px 0;
+        }
+        body.dark-theme .stat-row { border-bottom-color: #4a0000; }
+
+        /* Стили для тир-листа */
+        .tier-list-section {
+            background: rgba(30,10,50,0.9);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #f3cd54;
+        }
+        body.dark-theme .tier-list-section {
+            background: rgba(0,0,0,0.9);
+            border-color: #ff4444;
+        }
+
+        .tier-row {
+            display: flex;
+            align-items: flex-start;
+            margin: 10px 0;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tier-label {
+            font-weight: 900;
+            font-size: 1.4rem;
+            min-width: 50px;
+            text-align: center;
+            padding: 8px 15px;
+            border-radius: 15px;
+            letter-spacing: 2px;
+        }
+
+        .tier-s-plus { background: linear-gradient(135deg, #ff4444, #ff0000); color: white; text-shadow: 0 0 10px #ff0000; }
+        .tier-s-minus { background: linear-gradient(135deg, #ff8800, #ff6600); color: white; text-shadow: 0 0 10px #ff6600; }
+        .tier-a-plus { background: linear-gradient(135deg, #ffcc00, #ffaa00); color: #1a0a2e; }
+        .tier-a-minus { background: linear-gradient(135deg, #ffff00, #ffdd00); color: #1a0a2e; }
+        .tier-b-plus { background: linear-gradient(135deg, #cccccc, #aaaaaa); color: #1a0a2e; }
+
+        .tier-players {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            flex: 1;
+        }
+
+        .player-tag {
+            background: rgba(50,20,80,0.8);
+            border: 1px solid #c9a063;
+            border-radius: 15px;
+            padding: 4px 12px;
+            font-size: 13px;
+            color: #ffe4a8;
+            transition: all 0.3s;
+        }
+        body.dark-theme .player-tag {
+            background: rgba(20,0,0,0.8);
+            border-color: #8b0000;
+            color: #ff8888;
+        }
+        .player-tag:hover {
+            background: #f3cd54;
+            color: #1a0a2e;
+            transform: scale(1.05);
+        }
+
+        .footer-note { text-align: center; margin-top: 30px; color: #96866e; font-size: 13px; border-top: 1px dashed #5e4a32; padding-top: 15px; }
+        .lang-ru, .lang-en { transition: all 0.3s; }
+        .hidden-lang { display: none !important; }
+        p { margin-bottom: 8px; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .tab-btn { font-size: 11px; padding: 8px 10px; }
+            .main-card { padding: 15px; }
+            .music-toggle-btn { padding: 10px 20px; font-size: 13px; top: 10px; }
+            .tier-row { flex-direction: column; }
+            .tier-label { width: 100%; }
+        }
+    </style>
+</head>
+<body id="mainBody">
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="YOUR_AUDIO_FILE.mp3" type="audio/mpeg">
+    </audio>
+
+    <button class="music-toggle-btn" id="musicToggleBtn" onclick="toggleMusic()">
+        <span id="musicIcon">🔇</span> <span id="musicText">ВКЛЮЧИТЬ МУЗЫКУ</span>
+    </button>
+
+    <button class="secret-btn" id="secretBtn" title="Нажми 3 раза"></button>
+    <div class="secret-hint">🔮 Нажми 3 раза</div>
+    <div class="theme-indicator" id="themeIndicator"></div>
+
+    <div class="lang-switcher">
+        <button class="lang-btn active-lang" id="lang-ru" onclick="switchLanguage('ru')">🇷🇺 RU</button>
+        <button class="lang-btn" id="lang-en" onclick="switchLanguage('en')">🇬🇧 EN</button>
+    </div>
+
+    <div class="main-card">
+        <div class="title-wrapper">
+            <h1>✨ YOUR BIZARRE ADVENTURE ✨</h1>
+            <span class="subtitle lang-ru">JoJo's Bizarre Adventure • Roblox</span>
+            <span class="subtitle lang-en hidden-lang">JoJo's Bizarre Adventure • Roblox</span>
+        </div>
+
+        <div class="tabs-container">
+            <button class="tab-btn active" id="tab-overview"><span class="lang-ru">🏠 Обзор</span><span class="lang-en hidden-lang">🏠 Overview</span></button>
+            <button class="tab-btn" id="tab-stands"><span class="lang-ru">🌀 Стенды</span><span class="lang-en hidden-lang">🌀 Stands</span></button>
+            <button class="tab-btn" id="tab-competitive"><span class="lang-ru">🏆 Компетитив</span><span class="lang-en hidden-lang">🏆 Competitive</span></button>
+            <button class="tab-btn" id="tab-gangs"><span class="lang-ru">💀 Генги</span><span class="lang-en hidden-lang">💀 Gangs</span></button>
+            <button class="tab-btn" id="tab-guide"><span class="lang-ru">📘 Гайд</span><span class="lang-en hidden-lang">📘 Guide</span></button>
+            <button class="tab-btn" id="tab-lore"><span class="lang-ru">📜 Лор</span><span class="lang-en hidden-lang">📜 Lore</span></button>
+        </div>
+
+        <!-- ===== ОБЗОР ===== -->
+        <div class="tab-content active" id="content-overview">
+            <p class="lang-ru" style="text-align:center; font-size:1.1rem; color:#ddd0b5;">Добро пожаловать в <strong>Your Bizarre Adventure (YBA)</strong> — самую популярную RPG по вселенной JoJo's Bizarre Adventure на платформе Roblox! Игра собрала более 2 миллиардов посещений и продолжает активно развиваться. Здесь вас ждут уникальные стенды, захватывающие PvP-сражения, глубокий сюжет и огромное комьюнити преданных фанатов.</p>
+            <p class="lang-en hidden-lang" style="text-align:center; font-size:1.1rem; color:#ddd0b5;">Welcome to <strong>Your Bizarre Adventure (YBA)</strong> — the most popular JoJo's Bizarre Adventure RPG on Roblox! The game has gathered over 2 billion visits and continues to evolve actively.</p>
+            <div class="features-grid">
+                <div class="feature-box"><div class="feature-icon">⚔️</div><h3 class="lang-ru">PvP Арены</h3><h3 class="lang-en hidden-lang">PvP Arenas</h3></div>
+                <div class="feature-box"><div class="feature-icon">👾</div><h3 class="lang-ru">PvE Миссии</h3><h3 class="lang-en hidden-lang">PvE Missions</h3></div>
+                <div class="feature-box"><div class="feature-icon">⭐</div><h3 class="lang-ru">Редкие Стенды</h3><h3 class="lang-en hidden-lang">Rare Stands</h3></div>
+                <div class="feature-box"><span class="new-badge">NEW</span><div class="feature-icon">📦</div><h3>Stand Storage</h3></div>
+            </div>
+        </div>
+
+        <!-- ===== СТЕНДЫ ===== -->
+        <div class="tab-content" id="content-stands">
+            <h2 class="lang-ru">🌀 Популярные стенды и специализации</h2>
+            <h2 class="lang-en hidden-lang">🌀 Popular Stands & Specializations</h2>
+            <div class="info-block">
+                <div style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center;">
+                    <span class="stand-badge">🌟 Star Platinum</span><span class="stand-badge">⏱️ The World</span><span class="stand-badge">💎 Crazy Diamond</span><span class="stand-badge">🔴 King Crimson</span><span class="stand-badge">🐍 Whitesnake</span><span class="stand-badge">✝️ Gold Experience</span>
+                </div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-box"><h3>⚡ Hamon</h3></div>
+                <div class="feature-box"><h3>🌀 Spin</h3></div>
+                <div class="feature-box"><h3>🧛 Vampire</h3></div>
+                <div class="feature-box"><h3>🥊 Boxing</h3></div>
+                <div class="feature-box"><span class="new-badge">NEW</span><h3>📦 Stand Storage</h3></div>
+            </div>
+        </div>
+
+        <!-- ===== КОМПЕТИТИВ ===== -->
+        <div class="tab-content" id="content-competitive">
+            <h2 class="lang-ru">🏆 КОМПЕТИТИВНЫЙ РЕЖИМ</h2>
+            <h2 class="lang-en hidden-lang">🏆 COMPETITIVE MODE</h2>
+
+            <div class="top-tier-card">
+                <h3><span class="tier-badge">S+ TIER</span> <span class="lang-ru">Имба-связки</span><span class="lang-en hidden-lang">Meta Combos</span></h3>
+                <div style="display:flex; flex-wrap:wrap; gap:15px; margin-top:15px; justify-content:center;">
+                    <div class="feature-box" style="flex:1 1 200px; border-color:#f3cd54;"><h3>GER + Boxing</h3></div>
+                    <div class="feature-box" style="flex:1 1 200px; border-color:#f3cd54;"><h3>SP + Boxing</h3></div>
+                    <div class="feature-box" style="flex:1 1 200px; border-color:#f3cd54;"><h3>KCR + Boxing</h3></div>
+                </div>
+            </div>
+
+            <!-- ===== ТИР-ЛИСТ ИГРОКОВ ===== -->
+            <div class="tier-list-section">
+                <h2 style="color:#f3cd54; text-align:center; margin-bottom:20px;">📊 ТИР-ЛИСТ ИГРОКОВ YBA</h2>
+                
+                <!-- S+ -->
+                <div class="tier-row">
+                    <div class="tier-label tier-s-plus">S+</div>
+                    <div class="tier-players">
+                        <span class="player-tag">SanyaPEP (KCR)</span>
+                        <span class="player-tag">Attomex</span>
+                        <span class="player-tag">Prayer</span>
+                        <span class="player-tag">Axxtril</span>
+                        <span class="player-tag">Akklox</span>
+                        <span class="player-tag">Sajenec</span>
+                        <span class="player-tag">Flastar (Seikiiro)</span>
+                        <span class="player-tag">Frozen</span>
+                        <span class="player-tag">Ceob</span>
+                        <span class="player-tag">Fallen</span>
+                        <span class="player-tag">TORNADO</span>
+                        <span class="player-tag">Ef7m</span>
+                        <span class="player-tag">Wex</span>
+                        <span class="player-tag">CGG</span>
+                        <span class="player-tag">Digger</span>
+                    </div>
+                </div>
+
+                <!-- S- -->
+                <div class="tier-row">
+                    <div class="tier-label tier-s-minus">S-</div>
+                    <div class="tier-players">
+                        <span class="player-tag">Kashak</span>
+                        <span class="player-tag">Ярик-Юба</span>
+                        <span class="player-tag">Zitler</span>
+                        <span class="player-tag">KirillTsoy</span>
+                        <span class="player-tag">Ryuma</span>
+                        <span class="player-tag">Apapasin</span>
+                        <span class="player-tag">itzchortik</span>
+                        <span class="player-tag">Klinge</span>
+                        <span class="player-tag">Fleemo</span>
+                        <span class="player-tag">Jo9v (KCR)</span>
+                        <span class="player-tag">Heartless</span>
+                        <span class="player-tag">PopaThugHunter (GER)</span>
+                    </div>
+                </div>
+
+                <!-- A+ -->
+                <div class="tier-row">
+                    <div class="tier-label tier-a-plus">A+</div>
+                    <div class="tier-players">
+                        <span class="player-tag">Zaza</span>
+                        <span class="player-tag">Pakoratel</span>
+                        <span class="player-tag">Clyde</span>
+                        <span class="player-tag">Primo4ka227</span>
+                        <span class="player-tag">L1step (GER)</span>
+                        <span class="player-tag">Aby</span>
+                        <span class="player-tag">Heavenly</span>
+                        <span class="player-tag">Forken3m</span>
+                        <span class="player-tag">JogleZL</span>
+                        <span class="player-tag">Sdanater</span>
+                        <span class="player-tag">Talantik</span>
+                    </div>
+                </div>
+
+                <!-- A- -->
+                <div class="tier-row">
+                    <div class="tier-label tier-a-minus">A-</div>
+                    <div class="tier-players">
+                        <span class="player-tag">Jbuhriak</span>
+                        <span class="player-tag">Etzaard</span>
+                        <span class="player-tag">St2rm</span>
+                        <span class="player-tag">DisperXD</span>
+                        <span class="player-tag">Adewintor</span>
+                        <span class="player-tag">Raccer</span>
+                        <span class="player-tag">Lcan</span>
+                        <span class="player-tag">Sosiska</span>
+                        <span class="player-tag">Onix</span>
+                    </div>
+                </div>
+
+                <!-- B+ -->
+                <div class="tier-row">
+                    <div class="tier-label tier-b-plus">B+</div>
+                    <div class="tier-players">
+                        <span class="player-tag">Gafada</span>
+                        <span class="player-tag">Kacherga</span>
+                        <span class="player-tag">Brazagi</span>
+                        <span class="player-tag">Нарезчик</span>
+                        <span class="player-tag">Zamorozka</span>
+                        <span class="player-tag">Eka</span>
+                        <span class="player-tag">Rusliler</span>
+                        <span class="player-tag">Azria</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Словарь -->
+            <div class="info-block">
+                <h3 style="color:#f3cd54; text-align:center;">📖 СЛОВАРЬ</h3>
+                <div style="background:rgba(30,10,50,0.8); border-radius:15px; padding:20px; margin:15px 0;">
+                    <p><span class="glossary-term">🦁 ПРАЙД</span> — демонстрация превосходства после победы.</p>
+                </div>
+                <div style="background:rgba(30,10,50,0.8); border-radius:15px; padding:20px;">
+                    <p><span class="glossary-term">⚡ ПРАЙМ</span> — пиковое состояние игрока.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ГЕНГИ ===== -->
+        <div class="tab-content" id="content-gangs">
+            <h2 class="lang-ru">💀 ГЕНГИ</h2><h2 class="lang-en hidden-lang">💀 GANGS</h2>
+            <div class="gang-card dt"><h3>🩸 DARKTHRONE</h3></div>
+            <div class="gang-card nk"><h3>🇳🇬 NIGERIAN-KILLERS</h3></div>
+            <div class="gang-card twlz"><h3>🌙 TWILIGHTZ</h3></div>
+        </div>
+
+        <!-- ===== ГАЙД ===== -->
+        <div class="tab-content" id="content-guide">
+            <h2 class="lang-ru">📘 Гайд</h2><h2 class="lang-en hidden-lang">📘 Guide</h2>
+        </div>
+
+        <!-- ===== ЛОР ===== -->
+        <div class="tab-content" id="content-lore">
+            <h2 class="lang-ru">📜 Лор</h2><h2 class="lang-en hidden-lang">📜 Lore</h2>
+        </div>
+
+        <div class="footer-note">
+            <span class="lang-ru">⭐ Фанатский сайт.</span>
+            <span class="lang-en hidden-lang">⭐ Fan site.</span>
+        </div>
+    </div>
+
+    <script>
+        var bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 1.0;
+        var isMusicPlaying = false;
+
+        function updateMusicButton() {
+            var icon = document.getElementById('musicIcon');
+            var text = document.getElementById('musicText');
+            var btn = document.getElementById('musicToggleBtn');
+            if (isMusicPlaying) {
+                icon.textContent = '🔊';
+                text.textContent = 'ВЫКЛЮЧИТЬ МУЗЫКУ';
+                btn.classList.add('playing');
+            } else {
+                icon.textContent = '🔇';
+                text.textContent = 'ВКЛЮЧИТЬ МУЗЫКУ';
+                btn.classList.remove('playing');
+            }
+        }
+
+        window.toggleMusic = function() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                updateMusicButton();
+            } else {
+                bgMusic.play().then(function() {
+                    isMusicPlaying = true;
+                    updateMusicButton();
+                }).catch(function() {
+                    alert('Нажми ещё раз!');
+                });
+            }
+        };
+
+        bgMusic.addEventListener('play', function() { isMusicPlaying = true; updateMusicButton(); });
+        bgMusic.addEventListener('pause', function() { isMusicPlaying = false; updateMusicButton(); });
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('content-' + this.id.replace('tab-', '')).classList.add('active');
+            });
+        });
+
+        window.switchLanguage = function(lang) {
+            if (lang === 'ru') {
+                document.querySelectorAll('.lang-ru').forEach(el => el.classList.remove('hidden-lang'));
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.add('hidden-lang'));
+                document.getElementById('lang-ru').classList.add('active-lang');
+                document.getElementById('lang-en').classList.remove('active-lang');
+            } else {
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.remove('hidden-lang'));
+                document.querySelectorAll('.lang-ru').forEach(el => el.classList.add('hidden-lang'));
+                document.getElementById('lang-en').classList.add('active-lang');
+                document.getElementById('lang-ru').classList.remove('active-lang');
+            }
+        };
+
+        let clickCount = 0;
+        document.getElementById('secretBtn').addEventListener('click', function() {
+            clickCount++;
+            if (clickCount >= 3) {
+                document.getElementById('mainBody').classList.toggle('dark-theme');
+                var ind = document.getElementById('themeIndicator');
+                ind.textContent = document.getElementById('mainBody').classList.contains('dark-theme') ? '🌑 Тёмная тема' : '💜 Стандартная';
+                ind.classList.add('show');
+                setTimeout(function() { ind.classList.remove('show'); }, 2500);
+                clickCount = 0;
+            }
+        });
+    </script>
+</body>
+</html>
